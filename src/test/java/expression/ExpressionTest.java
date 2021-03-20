@@ -9,11 +9,11 @@ class ExpressionTest {
     @Test
     void evaluateSimplestTree() {
         //1 + 1 = 2
-        Node root = new Node("+");
-        root.left = new Node(1);
-        root.right = new Node(1);
+        Node root = NodeFactory.newNode("+");
+        root.left = NodeFactory.newNode(1);
+        root.right = NodeFactory.newNode(1);
 
-        Expression exp = new Expression(root);
+        ExpressionTree exp = new ExpressionTree(root);
 
         assertEquals(exp.evaluateTree(), 2);
     }
@@ -21,15 +21,15 @@ class ExpressionTest {
     @Test
     void evaluateSimpleTree() {
         // (5 * 4) + (100 - 20) = 100
-        Node root = new Node("+");
-        root.left = new Node("*");
-        root.left.left = new Node(5);
-        root.left.right = new Node(4);
-        root.right = new Node("-");
-        root.right.left = new Node(100);
-        root.right.right = new Node(20);
+        Node root = NodeFactory.newNode("+");
+        root.left = NodeFactory.newNode("*");
+        root.left.left = NodeFactory.newNode(5);
+        root.left.right = NodeFactory.newNode(4);
+        root.right = NodeFactory.newNode("-");
+        root.right.left = NodeFactory.newNode(100);
+        root.right.right = NodeFactory.newNode(20);
 
-        Expression exp = new Expression(root);
+        ExpressionTree exp = new ExpressionTree(root);
 
         assertEquals(exp.evaluateTree(), 100);
     }
@@ -37,17 +37,17 @@ class ExpressionTest {
     @Test
     void evaluateMoreComplexTree() {
         //5 * 4 + (100 - 20/2) = 110
-        Node root = new Node("+");
-        root.left = new Node("*");
-        root.left.left = new Node(5);
-        root.left.right = new Node(4);
-        root.right = new Node("-");
-        root.right.left = new Node(100);
-        root.right.right = new Node("/");
-        root.right.right.left = new Node(20);
-        root.right.right.right = new Node(2);
+        Node root = NodeFactory.newNode("+");
+        root.left = NodeFactory.newNode("*");
+        root.left.left = NodeFactory.newNode(5);
+        root.left.right = NodeFactory.newNode(4);
+        root.right = NodeFactory.newNode("-");
+        root.right.left = NodeFactory.newNode(100);
+        root.right.right = NodeFactory.newNode("/");
+        root.right.right.left = NodeFactory.newNode(20);
+        root.right.right.right = NodeFactory.newNode(2);
 
-        Expression exp = new Expression(root);
+        ExpressionTree exp = new ExpressionTree(root);
 
         assertEquals(exp.evaluateTree(), 110);
     }
