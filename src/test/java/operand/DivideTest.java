@@ -1,7 +1,7 @@
 package operand;
 
-import operand.Operand;
-import operand.impl.Divide;
+import tokeniser.token.Operand;
+import tokeniser.token.Divide;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

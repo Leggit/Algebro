@@ -1,10 +1,12 @@
 package operand;
 
-import operand.impl.Add;
-import operand.impl.Divide;
-import operand.impl.Multiply;
-import operand.impl.Subtract;
+import tokeniser.token.Add;
+import tokeniser.token.Divide;
+import tokeniser.token.Multiply;
+import tokeniser.token.Subtract;
 import org.junit.jupiter.api.Test;
+import tokeniser.token.Operand;
+import tokeniser.token.OperandFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 

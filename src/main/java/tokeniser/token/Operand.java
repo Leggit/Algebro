@@ -1,4 +1,4 @@
-package operand;
+package tokeniser.token;
 
 public interface Operand {
 

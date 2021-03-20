@@ -1,7 +1,7 @@
 package expression;
 
-import operand.Operand;
-import operand.OperandFactory;
+import tokeniser.token.Operand;
+import tokeniser.token.OperandFactory;
 
 public class OperandNode extends Node {
 

@@ -1,7 +1,7 @@
 package operand;
 
-import operand.Operand;
-import operand.impl.Subtract;
+import tokeniser.token.Operand;
+import tokeniser.token.Subtract;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

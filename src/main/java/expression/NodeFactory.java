@@ -1,5 +1,8 @@
 package expression;
 
+import com.sun.jdi.Value;
+import tokeniser.token.Number;
+
 public class NodeFactory {
 
     public static Node newNode(String symbol) {
@@ -7,6 +10,10 @@ public class NodeFactory {
     }
 
     public static Node newNode(double value) {
-        return new ValueNode(value);
+        return new NumberNode(new Number(value));
+    }
+
+    public static Node newNode(Number number) {
+        return new NumberNode(number);
     }
 }

@@ -1,9 +1,4 @@
-package operand;
-
-import operand.impl.Add;
-import operand.impl.Divide;
-import operand.impl.Multiply;
-import operand.impl.Subtract;
+package tokeniser.token;
 
 public class OperandFactory {
 
