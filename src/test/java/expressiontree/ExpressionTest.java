@@ -15,7 +15,7 @@ class ExpressionTest {
 
         ExpressionTree exp = new ExpressionTree(root);
 
-        assertEquals(exp.evaluateTree(), 2);
+        assertEquals(exp.evaluate(), 2);
     }
 
     @Test
@@ -31,7 +31,7 @@ class ExpressionTest {
 
         ExpressionTree exp = new ExpressionTree(root);
 
-        assertEquals(exp.evaluateTree(), 100);
+        assertEquals(exp.evaluate(), 100);
     }
 
     @Test
@@ -49,6 +49,6 @@ class ExpressionTest {
 
         ExpressionTree exp = new ExpressionTree(root);
 
-        assertEquals(exp.evaluateTree(), 110);
+        assertEquals(exp.evaluate(), 110);
     }
 }

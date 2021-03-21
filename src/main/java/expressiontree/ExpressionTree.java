@@ -7,7 +7,7 @@ public class ExpressionTree {
         this.root = root;
     }
 
-    public double evaluateTree() {
+    public double evaluate() {
         return root.evaluate();
     }
 }
