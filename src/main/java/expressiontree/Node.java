@@ -1,4 +1,4 @@
-package expression;
+package expressiontree;
 
 public abstract class Node {
     public Node left;

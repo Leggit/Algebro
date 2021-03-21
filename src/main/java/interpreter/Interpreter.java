@@ -1,32 +1,28 @@
-package interpretter;
+package interpreter;
 
 import expressiontree.ExpressionTree;
 import parser.Parser;
 import tokeniser.Tokeniser;
-import tokeniser.token.Token;
 
-import java.util.List;
-
-public class Interpretter {
+public class Interpreter {
 
     private final String input;
 
-    public Interpretter(String input) {
+    public Interpreter(String input) {
         this.input = input;
     }
 
-    public double run() throws InterpretError {
+    public double run() throws InterpreterError {
         try {
             Tokeniser tokeniser = new Tokeniser(input);
-            List<Token> tokens = tokeniser.tokenise();
 
-            Parser parser = new Parser(tokens);
+            Parser parser = new Parser(tokeniser.tokenise());
 
             ExpressionTree expressionTree = parser.parse();
 
             return expressionTree.evaluate();
         } catch (Exception e) {
-            throw new InterpretError("Failed to interpret expression, syntax may have been invalid");
+            throw new InterpreterError("Failed to interpret expression, syntax may have been invalid");
         }
     }
 }

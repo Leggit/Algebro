@@ -1,4 +1,4 @@
-package expression;
+package expressiontree;
 
 import org.junit.jupiter.api.Test;
 

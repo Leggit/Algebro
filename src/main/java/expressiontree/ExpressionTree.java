@@ -1,4 +1,4 @@
-package expression;
+package expressiontree;
 
 public class ExpressionTree {
     private Node root;

@@ -1,8 +1,8 @@
-package interpretter;
+package interpreter;
 
-public class InterpretError extends Exception {
+public class InterpreterError extends Exception {
 
-    public InterpretError(String msg) {
+    public InterpreterError(String msg) {
         super(msg);
     }
 }

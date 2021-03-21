@@ -1,4 +1,4 @@
-package expression;
+package expressiontree;
 
 import tokeniser.token.Operand;
 import tokeniser.token.OperandFactory;
