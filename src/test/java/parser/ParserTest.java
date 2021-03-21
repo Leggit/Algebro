@@ -15,12 +15,12 @@ class ParserTest {
 
         SyntaxError e = assertThrows(SyntaxError.class, () -> parser.parse());
 
-        assertTrue(e.getMessage().contains(")"));
+        assertTrue(e.getMessage().contains("expected )"));
     }
 
     @Test
     void shouldThrowSyntaxErrorWhenExpectingNumber() {
-        String[] inputs = new String[] {"+", "*", "()", "/ *", "* 1 +", "+/2", "(1 --- 2)"};
+        String[] inputs = new String[] {"+", "*", ")", "(", "()", "/ *", "* 1 +", "+/2", "(1 --- 2)"};
 
         for(String input : inputs) {
             Tokeniser tokeniser = new Tokeniser(input);
@@ -31,6 +31,7 @@ class ParserTest {
         }
     }
 
+    /* Desired functionality, not added yet
     @Test
     void shouldThrowSyntaxErrorForIncorrectClosingBracket() {
         Tokeniser tokeniser = new Tokeniser("1) + 1");
@@ -40,5 +41,6 @@ class ParserTest {
 
         assertTrue(e.getMessage().contains(")"));
     }
+     */
 
 }

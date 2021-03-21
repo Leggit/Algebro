@@ -98,4 +98,11 @@ class InterpreterTest {
     public void shouldThrowExceptionOnEmptyInput() {
         assertThrows(IllegalArgumentException.class, () -> new Interpreter(""));
     }
+
+    @Test
+    public void shouldThrowExceptionOnJunkInput() {
+        Interpreter interpreter = new Interpreter("rdfy ( 789) -==tguihunj(*&^ft7gyuihuoikp");
+        Exception e = assertThrows(IllegalArgumentException.class, () -> interpreter.run());
+        assertEquals(e.getMessage(), "Invalid token: r");
+    }
 }

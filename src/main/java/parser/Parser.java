@@ -6,12 +6,9 @@ import tokeniser.token.Number;
 
 import java.util.List;
 
+// TODO stop stack overflow errors for when it really should be throwing syntax errors
 public class Parser {
 
-    private enum OperatorTypes {
-        TERM,
-
-    }
     private final List<Token> tokens;
     private Token currentToken;
     private int tokenIndex = - 1;
@@ -35,13 +32,13 @@ public class Parser {
     private Node atom() throws SyntaxError {
         Token token = currentToken;
 
-        if(token.getClass() == Number.class) {
+        if(isNumber(token)) {
             advance();
             return NodeFactory.newNumberNode((Number) token);
-        } else if(token == Parentheses.LEFT) {
+        } else if (openBracket(token)) {
             advance();
             Node expression = expression();
-            if(currentToken == Parentheses.RIGHT) {
+            if(closeBracket(currentToken)) {
                 advance();
                 return expression;
             } else {
@@ -59,7 +56,7 @@ public class Parser {
     private Node factor() throws SyntaxError {
         Token token = currentToken;
 
-        if(token == Operator.ADD || token == Operator.SUBTRACT) {
+        if(isAddOrSubtract(token)) {
             advance();
             Node factor = power();
             if(factor.getClass() == NumberNode.class)
@@ -108,6 +105,22 @@ public class Parser {
                 return true;
         }
         return false;
+    }
+
+    private boolean openBracket(Token token) {
+        return token == Parentheses.LEFT;
+    }
+
+    private boolean closeBracket(Token token) {
+        return token == Parentheses.RIGHT;
+    }
+
+    private boolean isNumber(Token token) {
+        return token.getClass() == Number.class;
+    }
+
+    private boolean isAddOrSubtract(Token token) {
+        return token == Operator.ADD || token == Operator.SUBTRACT;
     }
 
     @FunctionalInterface
