@@ -3,15 +3,15 @@ package expressiontree;
 import tokeniser.token.Operand;
 import tokeniser.token.OperandFactory;
 
-public class OperandNode extends Node {
+public class BinaryOpNode extends Node {
 
     private Operand operand;
 
-    public OperandNode(String symbol) {
+    public BinaryOpNode(String symbol) {
         this.operand = OperandFactory.getOperand(symbol);
     }
 
-    public OperandNode(Operand operand, Node left, Node right) {
+    public BinaryOpNode(Operand operand, Node left, Node right) {
         this.left = left;
         this.right = right;
         this.operand = operand;

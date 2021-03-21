@@ -2,7 +2,7 @@ package tokeniser.token;
 
 import tokeniser.token.Operand;
 
-public class Add implements Operand {
+public class Add extends Operand {
 
     public static final String SYMBOL = "+";
 

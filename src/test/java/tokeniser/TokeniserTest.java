@@ -37,12 +37,14 @@ class TokeniserTest {
         expectedTokens.add(new LeftParen());
         expectedTokens.add(new Number(100000));
         expectedTokens.add(new Subtract());
-        expectedTokens.add(new Number(-2));
+        expectedTokens.add(new Subtract());
+        expectedTokens.add(new Number(2));
         expectedTokens.add(new RightParen());
         expectedTokens.add(new Multiply());
         expectedTokens.add(new Number(6.01));
         expectedTokens.add(new Divide());
-        expectedTokens.add(new Number(-2.13456));
+        expectedTokens.add(new Subtract());
+        expectedTokens.add(new Number(2.13456));
 
         List<Token> actualTokens = tokeniser.tokenise();
 
@@ -58,9 +60,11 @@ class TokeniserTest {
         Tokeniser tokeniser = new Tokeniser("-1.0913081 - -1");
         List<Token> expectedTokens = new ArrayList<Token>();
 
-        expectedTokens.add(new Number(-1.0913081));
         expectedTokens.add(new Subtract());
-        expectedTokens.add(new Number(-1));
+        expectedTokens.add(new Number(1.0913081));
+        expectedTokens.add(new Subtract());
+        expectedTokens.add(new Subtract());
+        expectedTokens.add(new Number(1));
 
         List<Token> actualTokens = tokeniser.tokenise();
 

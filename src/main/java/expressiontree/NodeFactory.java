@@ -7,7 +7,7 @@ import tokeniser.token.Token;
 public class NodeFactory {
 
     public static Node newNode(String symbol) {
-        return new OperandNode(symbol);
+        return new BinaryOpNode(symbol);
     }
 
     public static Node newNode(double value) {
@@ -22,7 +22,11 @@ public class NodeFactory {
         return newNode((Number) token);
     }
 
+    public static Node newNode(Token operand, Node value) {
+        return new UnaryOpNode((Operand) operand, (NumberNode) value);
+    }
+
     public static Node newNode(Token token, Node left, Node right) {
-        return new OperandNode((Operand) token, left, right);
+        return new BinaryOpNode((Operand) token, left, right);
     }
 }
