@@ -32,16 +32,16 @@ public class Tokeniser {
         Token newToken;
 
         while(currentChar != null) {
-            if(currentChar.equals(LeftParen.SYMBOL)) {
-                newToken = new LeftParen();
+            if(currentChar.equals(Parentheses.LEFT.symbol)) {
+                newToken = Parentheses.LEFT;
                 advance();
             }
-            else if(currentChar.equals(RightParen.SYMBOL)) {
-                newToken = new RightParen();
+            else if(currentChar.equals(Parentheses.RIGHT.symbol)) {
+                newToken = Parentheses.RIGHT;
                 advance();
             }
-            else if(Operand.symbolIsOperand(currentChar)) {
-                newToken = OperandFactory.getOperandToken(currentChar);
+            else if(Operator.find(currentChar) != null) {
+                newToken = Operator.find(currentChar);
                 advance();
             }
             else if(Number.DIGITS.contains(currentChar))

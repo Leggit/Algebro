@@ -11,6 +11,10 @@ public class Interpreter {
 
     public Interpreter(String input) {
         this.input = input;
+
+        if(this.input.equals("")) {
+            throw new IllegalArgumentException("The input to the interpreter cannot be empty");
+        }
     }
 
     public double run() throws SyntaxError {
