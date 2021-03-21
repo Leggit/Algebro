@@ -1,4 +1,4 @@
-package operand;
+package tokeniser.token;
 
 import tokeniser.token.Operand;
 import tokeniser.token.Multiply;

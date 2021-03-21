@@ -1,7 +1,13 @@
 package tokeniser.token;
 
-public interface Operand extends Token {
+public abstract class Operand implements Token {
 
-    double operate(double a, double b);
+    private static final String OPERANDS = Multiply.SYMBOL + Divide.SYMBOL + Add.SYMBOL + Power.SYMBOL + Subtract.SYMBOL;
+
+    public static boolean symbolIsOperand(String symbol) {
+        return symbol.length() == 1 && OPERANDS.contains((symbol));
+    }
+
+    public abstract double operate(double a, double b);
 
 }

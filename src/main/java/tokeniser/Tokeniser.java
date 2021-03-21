@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tokeniser {
-    private final String OPS = "+-/*";
-    private final String DIGITS = "1234567890";
 
     private final String input;
     private int position = -1;
@@ -31,7 +29,7 @@ public class Tokeniser {
     }
 
     public List<Token> tokenise() {
-        Token newToken = null;
+        Token newToken;
 
         while(currentChar != null) {
             if(currentChar.equals(LeftParen.SYMBOL)) {
@@ -42,15 +40,11 @@ public class Tokeniser {
                 newToken = new RightParen();
                 advance();
             }
-            else if(OPS.contains(currentChar)) {
-                if(isStartOfNegativeNumber()) {
-                    newToken = toNumber();
-                } else {
-                    newToken = (Token) OperandFactory.getOperand(currentChar);
-                    advance();
-                }
+            else if(Operand.symbolIsOperand(currentChar)) {
+                newToken = OperandFactory.getOperandToken(currentChar);
+                advance();
             }
-            else if(DIGITS.contains(currentChar))
+            else if(Number.DIGITS.contains(currentChar))
                 newToken = toNumber();
             else
                 throw new IllegalArgumentException("Invalid token: " + currentChar);
@@ -63,11 +57,6 @@ public class Tokeniser {
 
     private Number toNumber() {
         String numberStr = "";
-
-        if(currentChar.equals("-")) {
-            numberStr += "-";
-            advance();
-        }
 
         while(currentCharIsValidNumberChar()) {
             if(currentChar.equals(".") && !numberStr.contains(".")) {
@@ -83,10 +72,6 @@ public class Tokeniser {
     }
 
     private boolean currentCharIsValidNumberChar() {
-        return this.currentChar != null && (DIGITS + ".").contains(this.currentChar);
-    }
-
-    private boolean isStartOfNegativeNumber() {
-        return (currentChar.equals("-") && tokens.size() == 0) || (OPS.contains(tokens.get(tokens.size() - 1).getSymbol()));
+        return this.currentChar != null && (Number.DIGITS + ".").contains(this.currentChar);
     }
 }

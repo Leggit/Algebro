@@ -1,8 +1,6 @@
 package parser;
 
-import expressiontree.ExpressionTree;
-import expressiontree.Node;
-import expressiontree.NodeFactory;
+import expressiontree.*;
 import tokeniser.token.*;
 import tokeniser.token.Number;
 
@@ -30,7 +28,7 @@ public class Parser {
         currentToken = tokenIndex < tokens.size() ? tokens.get(tokenIndex) : currentToken;
     }
 
-    private Node factor() throws SyntaxError {
+    private Node atom() throws SyntaxError {
         Token token = currentToken;
 
         if(token.getClass() == Number.class) {
@@ -46,7 +44,23 @@ public class Parser {
                 throw new SyntaxError("Invalid syntax, expected )");
             }
         } else {
-            throw new SyntaxError("Invalid syntax error, expected a number");
+            throw new SyntaxError("Invalid syntax - expected number or + or - or (");
+        }
+    }
+
+    private Node power() throws SyntaxError {
+        return binaryOpNode(() -> atom(), () -> factor(), Power.SYMBOL);
+    }
+
+    private Node factor() throws SyntaxError {
+        Token token = currentToken;
+
+        if(token.getClass() == Add.class || token.getClass() == Subtract.class) {
+            advance();
+            Node factor = factor();
+            return NodeFactory.newNode(token, factor);
+        } else {
+            return power();
         }
     }
 
@@ -65,6 +79,19 @@ public class Parser {
             Token opToken = currentToken;
             advance();
             Node right = function.run();
+            left = NodeFactory.newNode(opToken, left, right);
+        }
+
+        return left;
+    }
+
+    private Node binaryOpNode(NodeFunction function1, NodeFunction function2, String... ops) throws SyntaxError {
+        Node left = function1.run();
+
+        while(currentTokenIsCorrectOperand(ops)) {
+            Token opToken = currentToken;
+            advance();
+            Node right = function2.run();
             left = NodeFactory.newNode(opToken, left, right);
         }
 

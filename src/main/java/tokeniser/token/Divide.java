@@ -2,7 +2,7 @@ package tokeniser.token;
 
 import tokeniser.token.Operand;
 
-public class Divide implements Operand {
+public class Divide extends Operand {
 
     public static final String SYMBOL = "/";
 

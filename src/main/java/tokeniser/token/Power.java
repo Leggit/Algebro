@@ -1,12 +1,12 @@
 package tokeniser.token;
 
-public class Multiply extends Operand {
+public class Power extends Operand {
 
-    public static final String SYMBOL = "*";
+    public static final String SYMBOL = "^";
 
     @Override
     public double operate(double a, double b) {
-        return a * b;
+        return Math.pow(a,b);
     }
 
     @Override
