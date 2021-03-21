@@ -1,26 +1,23 @@
 package expressiontree;
 
-import tokeniser.token.Operand;
-import tokeniser.token.OperandFactory;
+import tokeniser.token.Operator;
 
 public class BinaryOpNode extends Node {
 
-    private Operand operand;
+    private Node left;
+    private Node right;
+    private Operator operator;
 
-    public BinaryOpNode(String symbol) {
-        this.operand = OperandFactory.getOperand(symbol);
-    }
-
-    public BinaryOpNode(Operand operand, Node left, Node right) {
+    public BinaryOpNode(Operator operator, Node left, Node right) {
         this.left = left;
         this.right = right;
-        this.operand = operand;
+        this.operator = operator;
     }
 
     @Override
     public double evaluate() {
         double leftVal = left.evaluate();
         double rightVal = right.evaluate();
-        return operand.operate(leftVal, rightVal);
+        return operator.calculate(leftVal, rightVal);
     }
 }

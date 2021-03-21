@@ -1,32 +1,19 @@
 package expressiontree;
 
 import tokeniser.token.Number;
-import tokeniser.token.Operand;
-import tokeniser.token.Token;
+import tokeniser.token.Operator;
 
 public class NodeFactory {
 
-    public static Node newNode(String symbol) {
-        return new BinaryOpNode(symbol);
-    }
-
-    public static Node newNode(double value) {
-        return new NumberNode(new Number(value));
-    }
-
-    public static Node newNode(Number number) {
+    public static Node newNumberNode(Number number) {
         return new NumberNode(number);
     }
 
-    public static Node newNode(Token token) {
-        return newNode((Number) token);
+    public static Node newBinaryOpNode(Operator op, Node left, Node right) {
+        return new BinaryOpNode(op, left, right);
     }
 
-    public static Node newNode(Token operand, Node value) {
-        return new UnaryOpNode((Operand) operand, (NumberNode) value);
-    }
-
-    public static Node newNode(Token token, Node left, Node right) {
-        return new BinaryOpNode((Operand) token, left, right);
+    public static Node newUnaryOpNode(Operator op, NumberNode numberNode) {
+        return  new UnaryOpNode(op, numberNode);
     }
 }

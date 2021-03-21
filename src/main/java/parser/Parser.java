@@ -8,6 +8,10 @@ import java.util.List;
 
 public class Parser {
 
+    private enum OperatorTypes {
+        TERM,
+
+    }
     private final List<Token> tokens;
     private Token currentToken;
     private int tokenIndex = - 1;
@@ -33,11 +37,11 @@ public class Parser {
 
         if(token.getClass() == Number.class) {
             advance();
-            return NodeFactory.newNode(token);
-        } else if(token.getClass() == LeftParen.class) {
+            return NodeFactory.newNumberNode((Number) token);
+        } else if(token == Parentheses.LEFT) {
             advance();
             Node expression = expression();
-            if(currentToken.getClass() == RightParen.class) {
+            if(currentToken == Parentheses.RIGHT) {
                 advance();
                 return expression;
             } else {
@@ -49,60 +53,59 @@ public class Parser {
     }
 
     private Node power() throws SyntaxError {
-        return binaryOpNode(() -> atom(), () -> factor(), Power.SYMBOL);
+        return binaryOpNode(() -> atom(), () -> factor(), Operator.POWER);
     }
 
     private Node factor() throws SyntaxError {
         Token token = currentToken;
 
-        if(token.getClass() == Add.class || token.getClass() == Subtract.class) {
+        if(token == Operator.ADD || token == Operator.SUBTRACT) {
             advance();
-            Node factor = factor();
-            return NodeFactory.newNode(token, factor);
+            Node factor = power();
+            if(factor.getClass() == NumberNode.class)
+                return NodeFactory.newUnaryOpNode((Operator) token, (NumberNode) factor);
+            else {
+                throw new SyntaxError("Expected a number");
+            }
         } else {
             return power();
         }
     }
 
     private Node term() throws SyntaxError {
-        return binaryOpNode(() -> factor(), Multiply.SYMBOL, Divide.SYMBOL);
+        return binaryOpNode(() -> factor(), Operator.MULTIPLY, Operator.DIVIDE);
     }
 
     private Node expression() throws SyntaxError {
-        return binaryOpNode(() -> term(), Add.SYMBOL, Subtract.SYMBOL);
+        return binaryOpNode(() -> term(), Operator.ADD, Operator.SUBTRACT);
     }
 
-    private Node binaryOpNode(NodeFunction function, String... ops) throws SyntaxError {
+    private Node binaryOpNode(NodeFunction function, Operator... ops) throws SyntaxError {
         Node left = function.run();
+        left = getNode(function, left, ops);
+        return left;
+    }
 
-        while(currentTokenIsCorrectOperand(ops)) {
+    private Node binaryOpNode(NodeFunction function1, NodeFunction function2, Operator... ops) throws SyntaxError {
+        Node left = function1.run();
+        left = getNode(function2, left, ops);
+        return left;
+    }
+
+    private Node getNode(NodeFunction function, Node left, Operator[] ops) throws SyntaxError {
+        while (currentTokenIsCorrectOperand(ops)) {
             Token opToken = currentToken;
             advance();
             Node right = function.run();
-            left = NodeFactory.newNode(opToken, left, right);
+            left = NodeFactory.newBinaryOpNode((Operator) opToken, left, right);
         }
-
         return left;
     }
 
-    private Node binaryOpNode(NodeFunction function1, NodeFunction function2, String... ops) throws SyntaxError {
-        Node left = function1.run();
-
-        while(currentTokenIsCorrectOperand(ops)) {
-            Token opToken = currentToken;
-            advance();
-            Node right = function2.run();
-            left = NodeFactory.newNode(opToken, left, right);
-        }
-
-        return left;
-    }
-
-    private boolean currentTokenIsCorrectOperand(String... opSymbols) {
-        for(String symbol : opSymbols) {
-            if(currentToken.getSymbol().equals(symbol)) {
+    private boolean currentTokenIsCorrectOperand(Operator... ops) {
+        for(Operator op : ops) {
+            if(currentToken.getSymbol().equals(op.symbol))
                 return true;
-            }
         }
         return false;
     }
