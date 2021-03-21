@@ -34,12 +34,12 @@ public class Tokeniser {
         Token newToken = null;
 
         while(currentChar != null) {
-            if(currentChar.equals(LeftBrace.SYMBOL)) {
-                newToken = new LeftBrace();
+            if(currentChar.equals(LeftParen.SYMBOL)) {
+                newToken = new LeftParen();
                 advance();
             }
-            else if(currentChar.equals(RightBrace.SYMBOL)) {
-                newToken = new RightBrace();
+            else if(currentChar.equals(RightParen.SYMBOL)) {
+                newToken = new RightParen();
                 advance();
             }
             else if(OPS.contains(currentChar)) {

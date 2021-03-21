@@ -1,8 +1,6 @@
 package tokeniser.token;
 
-import tokeniser.token.Operand;
-
-public class Multiply implements Operand, Token {
+public class Multiply implements Operand {
 
     public static final String SYMBOL = "*";
 

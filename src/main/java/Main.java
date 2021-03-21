@@ -1,14 +1,13 @@
-import interpreter.InterpreterError;
 import interpreter.Interpreter;
 
 public class Main {
     public static void main(String[] args) {
-        Interpreter interpreter = new Interpreter("1 + 1");
+        Interpreter interpreter = new Interpreter("((1 + 3)) * (1 - 2)))/ (10 * -1");
 
         try {
             System.out.println(interpreter.run());
-        } catch (InterpreterError interpretError) {
-            System.out.println(interpretError.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

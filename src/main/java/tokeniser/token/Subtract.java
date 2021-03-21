@@ -1,8 +1,6 @@
 package tokeniser.token;
 
-import tokeniser.token.Operand;
-
-public class Subtract implements Operand, Token {
+public class Subtract implements Operand {
 
     public static final String SYMBOL = "-";
 

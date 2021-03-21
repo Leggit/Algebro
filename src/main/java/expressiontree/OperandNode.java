@@ -11,6 +11,12 @@ public class OperandNode extends Node {
         this.operand = OperandFactory.getOperand(symbol);
     }
 
+    public OperandNode(Operand operand, Node left, Node right) {
+        this.left = left;
+        this.right = right;
+        this.operand = operand;
+    }
+
     @Override
     public double evaluate() {
         double leftVal = left.evaluate();

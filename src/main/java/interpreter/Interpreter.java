@@ -2,6 +2,7 @@ package interpreter;
 
 import expressiontree.ExpressionTree;
 import parser.Parser;
+import parser.SyntaxError;
 import tokeniser.Tokeniser;
 
 public class Interpreter {
@@ -12,17 +13,13 @@ public class Interpreter {
         this.input = input;
     }
 
-    public double run() throws InterpreterError {
-        try {
-            Tokeniser tokeniser = new Tokeniser(input);
+    public double run() throws SyntaxError {
+        Tokeniser tokeniser = new Tokeniser(input);
 
-            Parser parser = new Parser(tokeniser.tokenise());
+        Parser parser = new Parser(tokeniser.tokenise());
 
-            ExpressionTree expressionTree = parser.parse();
+        ExpressionTree expressionTree = parser.parse();
 
-            return expressionTree.evaluate();
-        } catch (Exception e) {
-            throw new InterpreterError("Failed to interpret expression, syntax may have been invalid");
-        }
+        return expressionTree.evaluate();
     }
 }
