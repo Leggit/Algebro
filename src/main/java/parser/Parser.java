@@ -6,40 +6,30 @@ import tokeniser.token.Number;
 
 import java.util.List;
 
-// TODO stop stack overflow errors for when it really should be throwing syntax errors
 public class Parser {
 
-    private final List<Token> tokens;
-    private Token currentToken;
-    private int tokenIndex = - 1;
+    ParserData tokens;
 
     public Parser(List<Token> tokens) {
-        this.tokens = tokens;
-        advance();
+        this.tokens = new ParserData(tokens);
     }
 
     public ExpressionTree parse() throws SyntaxError {
         Node root = expression();
-
         return new ExpressionTree(root);
     }
 
-    private void advance() {
-        tokenIndex++;
-        currentToken = tokenIndex < tokens.size() ? tokens.get(tokenIndex) : currentToken;
-    }
-
     private Node atom() throws SyntaxError {
-        Token token = currentToken;
+        Token token = tokens.getCurrentToken();
 
         if(isNumber(token)) {
-            advance();
+            tokens.advance();
             return NodeFactory.newNumberNode((Number) token);
         } else if (openBracket(token)) {
-            advance();
+            tokens.advance();
             Node expression = expression();
-            if(closeBracket(currentToken)) {
-                advance();
+            if(closeBracket(tokens.getCurrentToken())) {
+                tokens.advance();
                 return expression;
             } else {
                 throw new SyntaxError("Invalid syntax, expected )");
@@ -54,13 +44,14 @@ public class Parser {
     }
 
     private Node factor() throws SyntaxError {
-        Token token = currentToken;
+        Token token = tokens.getCurrentToken();
 
         if(isAddOrSubtract(token)) {
-            advance();
-            Node factor = power();
-            if(factor.getClass() == NumberNode.class)
-                return NodeFactory.newUnaryOpNode((Operator) token, (NumberNode) factor);
+            tokens.advance();
+            Node factor = atom();
+            if(factor.getClass() == NumberNode.class || factor.getClass() == BinaryOpNode.class) {
+                return NodeFactory.newUnaryOpNode((Operator) token, factor);
+            }
             else {
                 throw new SyntaxError("Expected a number");
             }
@@ -77,23 +68,23 @@ public class Parser {
         return binaryOpNode(() -> term(), Operator.ADD, Operator.SUBTRACT);
     }
 
-    private Node binaryOpNode(NodeFunction function, Operator... ops) throws SyntaxError {
-        Node left = function.run();
+    private Node binaryOpNode(ParserRule function, Operator... ops) throws SyntaxError {
+        Node left = function.parse();
         left = getNode(function, left, ops);
         return left;
     }
 
-    private Node binaryOpNode(NodeFunction function1, NodeFunction function2, Operator... ops) throws SyntaxError {
-        Node left = function1.run();
+    private Node binaryOpNode(ParserRule function1, ParserRule function2, Operator... ops) throws SyntaxError {
+        Node left = function1.parse();
         left = getNode(function2, left, ops);
         return left;
     }
 
-    private Node getNode(NodeFunction function, Node left, Operator[] ops) throws SyntaxError {
+    private Node getNode(ParserRule function, Node left, Operator[] ops) throws SyntaxError {
         while (currentTokenIsCorrectOperand(ops)) {
-            Token opToken = currentToken;
-            advance();
-            Node right = function.run();
+            Token opToken = tokens.getCurrentToken();
+            tokens.advance();
+            Node right = function.parse();
             left = NodeFactory.newBinaryOpNode((Operator) opToken, left, right);
         }
         return left;
@@ -101,7 +92,7 @@ public class Parser {
 
     private boolean currentTokenIsCorrectOperand(Operator... ops) {
         for(Operator op : ops) {
-            if(currentToken.getSymbol().equals(op.symbol))
+            if(tokens.getCurrentToken().getSymbol().equals(op.symbol))
                 return true;
         }
         return false;
@@ -122,10 +113,4 @@ public class Parser {
     private boolean isAddOrSubtract(Token token) {
         return token == Operator.ADD || token == Operator.SUBTRACT;
     }
-
-    @FunctionalInterface
-    private interface NodeFunction {
-        Node run() throws SyntaxError;
-    }
-
 }

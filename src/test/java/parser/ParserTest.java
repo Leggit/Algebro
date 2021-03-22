@@ -1,6 +1,8 @@
 package parser;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import tokeniser.Tokeniser;
 import tokeniser.token.Token;
 
@@ -13,25 +15,40 @@ class ParserTest {
         Tokeniser tokeniser = new Tokeniser("(1 + 1");
         Parser parser = new Parser(tokeniser.tokenise());
 
-        SyntaxError e = assertThrows(SyntaxError.class, () -> parser.parse());
+        Parser finalParser1 = parser;
+        SyntaxError e = assertThrows(SyntaxError.class, () -> finalParser1.parse());
+
+        assertTrue(e.getMessage().contains("expected )"));
+
+        tokeniser = new Tokeniser("(1 + (1)");
+        parser = new Parser(tokeniser.tokenise());
+
+        Parser finalParser = parser;
+        e = assertThrows(SyntaxError.class, () -> finalParser.parse());
 
         assertTrue(e.getMessage().contains("expected )"));
     }
 
-    @Test
-    void shouldThrowSyntaxErrorWhenExpectingNumber() {
-        String[] inputs = new String[] {"+", "*", ")", "(", "()", "/ *", "* 1 +", "+/2", "(1 --- 2)"};
+    @ParameterizedTest
+    @ValueSource(strings = {"+", "*", ")", "(", "()", "/ *", "* 1 +", "+/2", "(1 --- 2)", "1 +(* 2)"})
+    void shouldThrowSyntaxErrorWhenExpectingNumber(String input) {
+        Tokeniser tokeniser = new Tokeniser(input);
+        Parser parser = new Parser(tokeniser.tokenise());
 
-        for(String input : inputs) {
-            Tokeniser tokeniser = new Tokeniser(input);
-            Parser parser = new Parser(tokeniser.tokenise());
-
-            SyntaxError e = assertThrows(SyntaxError.class, () -> parser.parse());
-            assertTrue(e.getMessage().contains("number"));
-        }
+        SyntaxError e = assertThrows(SyntaxError.class, () -> parser.parse());
+        assertTrue(e.getMessage().contains("number"));
     }
 
-    /* Desired functionality, not added yet
+    @Test
+    void shouldThrowSyntaxErrorWhenExpectingOperand() {
+        Tokeniser tokeniser = new Tokeniser("(1) 1");
+        Parser parser = new Parser(tokeniser.tokenise());
+
+        SyntaxError e = assertThrows(SyntaxError.class, () -> parser.parse());
+
+        assertTrue(e.getMessage().contains(")"));
+    }
+
     @Test
     void shouldThrowSyntaxErrorForIncorrectClosingBracket() {
         Tokeniser tokeniser = new Tokeniser("1) + 1");
@@ -41,6 +58,4 @@ class ParserTest {
 
         assertTrue(e.getMessage().contains(")"));
     }
-     */
-
 }

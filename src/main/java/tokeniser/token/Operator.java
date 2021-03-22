@@ -20,6 +20,11 @@ public enum Operator implements Token {
         return this.symbol;
     }
 
+    @Override
+    public String toString() {
+        return "[OP:" + this.symbol + "]";
+    }
+
     public static Operator find(String symbol) {
         for(Operator op : Operator.values()) {
             if(op.symbol.equals(symbol))

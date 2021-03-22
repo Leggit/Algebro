@@ -1,0 +1,11 @@
+<expression> ::= <expression> | <term><+-><term>
+<term> ::= <term> | <factor><*/><factor>
+<factor> ::= <+-><atom>
+<power> ::= <power> | <atom><^><factor>
+<atom> ::= <number> | <leftParen><expression><rightParen>
+
+factor     = number | "(" expression ")"
+value      = ("+" | "-") expression | expression
+power      = power | value ^ value
+component  = component | factor  ("*" | "/") factor
+expression = expression | component ("+" | "-") component

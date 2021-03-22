@@ -13,7 +13,7 @@ public class NodeFactory {
         return new BinaryOpNode(op, left, right);
     }
 
-    public static Node newUnaryOpNode(Operator op, NumberNode numberNode) {
-        return  new UnaryOpNode(op, numberNode);
+    public static Node newUnaryOpNode(Operator op, Node child) {
+        return  new UnaryOpNode(op, child);
     }
 }

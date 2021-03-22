@@ -14,4 +14,9 @@ public class Number implements Token {
     public String getSymbol() {
         return String.valueOf(value);
     }
+
+    @Override
+    public String toString() {
+        return "[NUMBER:" + value + "]";
+    }
 }

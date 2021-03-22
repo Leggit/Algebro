@@ -5,15 +5,15 @@ import tokeniser.token.Operator;
 public class UnaryOpNode extends Node {
 
     Operator operand;
-    NumberNode numberNode;
+    Node child;
 
-    public UnaryOpNode(Operator operand, NumberNode numberNode) {
+    public UnaryOpNode(Operator operand, Node child) {
         this.operand = operand;
-        this.numberNode = numberNode;
+        this.child = child;
     }
 
     @Override
     public double evaluate() {
-        return numberNode.evaluate() * operand.calculate(0, 1);
+        return child.evaluate() * operand.calculate(0, 1);
     }
 }

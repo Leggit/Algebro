@@ -95,6 +95,12 @@ class InterpreterTest {
     }
 
     @Test
+    public void evaluatesNegativeExpressions() throws SyntaxError {
+        Interpreter interpreter = new Interpreter("-(9 + 2)");
+        assertEquals(interpreter.run(), -11);
+    }
+
+    @Test
     public void shouldThrowExceptionOnEmptyInput() {
         assertThrows(IllegalArgumentException.class, () -> new Interpreter(""));
     }

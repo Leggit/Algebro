@@ -51,6 +51,7 @@ class TokeniserTest {
         assertEquals(expectedTokens.size(), actualTokens.size());
 
         for(int i = 0; i < expectedTokens.size(); i++) {
+            System.out.print(actualTokens.get(i).toString());
             assertEquals(expectedTokens.get(i).getSymbol(), actualTokens.get(i).getSymbol());
         }
     }

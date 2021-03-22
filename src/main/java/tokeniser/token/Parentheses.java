@@ -15,4 +15,9 @@ public enum Parentheses implements Token {
     public String getSymbol() {
         return symbol;
     }
+
+    @Override
+    public String toString() {
+        return "[PAREN: " + symbol + "]";
+    }
 }
