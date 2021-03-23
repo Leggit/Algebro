@@ -1,9 +1,14 @@
 package interpreter;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import parser.Parser;
 import parser.SyntaxError;
 import tokeniser.Tokeniser;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,104 +16,103 @@ class InterpreterTest {
 
     @Test
     public void evaluatesSingleDigit() throws SyntaxError {
-        Interpreter interpreter = new Interpreter("2");
-
-        assertEquals(interpreter.run(), 2);
+        double actual = Interpreter.evaluate("2");
+        assertEquals(2, actual);
     }
 
     @Test
     public void evaluatesUnaryExpressions() throws SyntaxError {
-        Interpreter interpreter;
+        double actual = Interpreter.evaluate("+2");
+        assertEquals(2, actual);
 
-        interpreter = new Interpreter("+2");
-        assertEquals(interpreter.run(), 2);
+        actual = Interpreter.evaluate("-2");
+        assertEquals(-2, actual);
 
-        interpreter = new Interpreter("-2");
-        assertEquals(interpreter.run(), -2);
+        actual = Interpreter.evaluate("-(2+2)");
+        assertEquals(-4, actual);
     }
 
     @Test
     public void evaluatesSimpleAddition() throws SyntaxError {
-        Interpreter interpreter = new Interpreter("2 + 2");
-
-        assertEquals(interpreter.run(), 4);
+        double actual = Interpreter.evaluate("2 + 2");
+        assertEquals(4, actual);
     }
 
     @Test
     public void evaluatesSimpleSubtraction() throws SyntaxError {
-        Interpreter interpreter = new Interpreter("2 - 2");
-
-        assertEquals(interpreter.run(), 0);
+        double actual = Interpreter.evaluate("2 - 2");
+        assertEquals(0, actual);
     }
 
     @Test
     public void evaluatesSimpleMultiplication() throws SyntaxError {
-        Interpreter interpreter = new Interpreter("2 * 2");
-
-        assertEquals(interpreter.run(), 4);
+        double actual = Interpreter.evaluate("2 * 2");
+        assertEquals(4, actual);
     }
 
     @Test
     public void evaluatesSimpleDivision() throws SyntaxError {
-        Interpreter interpreter = new Interpreter("2 / 2");
-
-        assertEquals(interpreter.run(), 1);
+        double actual = Interpreter.evaluate("2 / 2");
+        assertEquals(1, actual);
     }
 
     @Test
     public void evaluatesSimplePowers() throws SyntaxError {
-        Interpreter interpreter = new Interpreter("2 ^ 2");
-
-        assertEquals(interpreter.run(), 4);
+        double actual = Interpreter.evaluate("2 ^ 2");
+        assertEquals(4, actual);
     }
 
     @Test
-    public void evaluatesComplexExpressions() throws SyntaxError {
-        Interpreter interpreter;
+    public void respectsBidmas() throws SyntaxError {
+        double actual = Interpreter.evaluate("2 + 3 - 4 * 5 / 6 ^ (2 - 1.3)");
+        double expected = 2 + 3 - 4 * 5 / Math.pow(6, (2 - 1.3));
+        assertEquals(expected, actual);
 
-        interpreter = new Interpreter("(2.567 * -0.78) / (1/2 * 9.678 ^ 2 - (2 + 3))");
-        assertEquals(interpreter.run(), -0.047864495185270584);
+        actual = Interpreter.evaluate("2 * (3 + 3 * (4/2 - 6 ^ 1.2) ^ 2)");
+        assertEquals(266.2377147139545, actual);
+    }
 
-        interpreter = new Interpreter("(8.9 / 2 * -0.009 + 7 * (4 - 4/5)) / (10.1 - 2)");
-        assertEquals(interpreter.run(), 2.760487654320988);
-
-        interpreter = new Interpreter("(2.567 * -0.78) / (1/2 * 9.678 ^ 2 - (2 + 3)) ^ 2");
-        assertEquals(interpreter.run(), -0.0011442119901215579);
-
-        interpreter = new Interpreter("((((2.567 * -0.78) / (1/2) * 9.678) ^ 2 - (2 + 3))) ^ 2");
-        assertEquals(interpreter.run(), 2241032.1628413615);
-
-        interpreter = new Interpreter("2 ^ ((2) ^ 2) ^ 2");
-        assertEquals(interpreter.run(), 65536);
+    @ParameterizedTest
+    @CsvSource({
+            "(2.567 * -0.78) / (1/2 * 9.678 ^ 2 - (2 + 3)),-0.047864495185270584",
+            "(8.9 / 2 * -0.009 + 7 * (4 - 4/5)) / (10.1 - 2),2.760487654320988",
+            "(2.567 * -0.78) / (1/2 * 9.678 ^ 2 - (2 + 3)) ^ 2,-0.0011442119901215579",
+            "((((2.567 * -0.78) / (1/2) * 9.678) ^ 2 - (2 + 3))) ^ 2,2241032.1628413615",
+            "2 ^ ((2) ^ 2) ^ 2,65536"
+    })
+    public void evaluatesComplexExpressions(String equation, String answer) throws SyntaxError {
+        double actual = Interpreter.evaluate(equation);
+        assertEquals(Double.parseDouble(answer), actual);
     }
 
     @Test
     public void evaluatesInverseNegativePowers() throws SyntaxError {
-        Interpreter interpreter = new Interpreter("2 ^ -1");
-        assertEquals(interpreter.run(), 0.5);
+        double actual = Interpreter.evaluate("2 ^ -1");
+        assertEquals(0.5, actual);
     }
 
     @Test
     public void evaluatesFractionalPowers() throws SyntaxError {
-        Interpreter interpreter = new Interpreter("4 ^ (1/2)");
-        assertEquals(interpreter.run(), 2);
+        double actual = Interpreter.evaluate("4 ^ (1/2)");
+        assertEquals(2, actual);
     }
 
     @Test
     public void evaluatesNegativeExpressions() throws SyntaxError {
-        Interpreter interpreter = new Interpreter("-(9 + 2)");
-        assertEquals(interpreter.run(), -11);
+        double actual = Interpreter.evaluate("-(9 + 2)");
+        assertEquals(-11, actual);
     }
 
-    @Test
-    public void shouldThrowExceptionOnEmptyInput() {
-        assertThrows(IllegalArgumentException.class, () -> new Interpreter(""));
+    @ParameterizedTest
+    @ValueSource(strings = {"", " "})
+    public void shouldThrowExceptionOnEmptyInput(String input) {
+        assertThrows(SyntaxError.class, () -> Interpreter.evaluate(input));
     }
 
     @Test
     public void shouldThrowExceptionOnJunkInput() {
-        Interpreter interpreter = new Interpreter("rdfy ( 789) -==tguihunj(*&^ft7gyuihuoikp");
-        Exception e = assertThrows(IllegalArgumentException.class, () -> interpreter.run());
+        String junk = "1 rdfy ( 789) -==tguihunj(*&^ft7gyuihuoikp";
+        Exception e = assertThrows(IllegalArgumentException.class, () -> Interpreter.evaluate(junk));
         assertEquals(e.getMessage(), "Invalid token: r");
     }
 }

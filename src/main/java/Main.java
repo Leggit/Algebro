@@ -1,12 +1,11 @@
 import interpreter.Interpreter;
+import parser.SyntaxError;
 
 public class Main {
     public static void main(String[] args) {
-        Interpreter interpreter = new Interpreter("2 ^ 2");
-
         try {
-            System.out.println(interpreter.run());
-        } catch (Exception e) {
+            System.out.println(Interpreter.evaluate("2 ^ 2"));
+        } catch (Exception | SyntaxError e) {
             e.printStackTrace();
         }
     }

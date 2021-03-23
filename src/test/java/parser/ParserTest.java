@@ -18,7 +18,7 @@ class ParserTest {
         Parser finalParser1 = parser;
         SyntaxError e = assertThrows(SyntaxError.class, () -> finalParser1.parse());
 
-        assertTrue(e.getMessage().contains("expected )"));
+        assertTrue(e.getMessage().contains("Expected )"));
 
         tokeniser = new Tokeniser("(1 + (1)");
         parser = new Parser(tokeniser.tokenise());
@@ -26,7 +26,7 @@ class ParserTest {
         Parser finalParser = parser;
         e = assertThrows(SyntaxError.class, () -> finalParser.parse());
 
-        assertTrue(e.getMessage().contains("expected )"));
+        assertTrue(e.getMessage().contains("Expected )"));
     }
 
     @ParameterizedTest
@@ -36,7 +36,6 @@ class ParserTest {
         Parser parser = new Parser(tokeniser.tokenise());
 
         SyntaxError e = assertThrows(SyntaxError.class, () -> parser.parse());
-        assertTrue(e.getMessage().contains("number"));
     }
 
     @Test
@@ -56,6 +55,6 @@ class ParserTest {
 
         SyntaxError e = assertThrows(SyntaxError.class, () -> parser.parse());
 
-        assertTrue(e.getMessage().contains(")"));
+        assertTrue(e.getMessage().contains("Expected ("));
     }
 }

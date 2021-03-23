@@ -23,5 +23,8 @@ public class ParserData {
         return this.currentToken;
     }
 
+    public List<Token> getAll() {
+        return this.tokens;
+    }
 }
 

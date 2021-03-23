@@ -15,6 +15,7 @@ public class Parser {
     }
 
     public ExpressionTree parse() throws SyntaxError {
+        SyntaxValidator.validate(tokens.getAll());
         Node root = expression();
         return new ExpressionTree(root);
     }
@@ -32,10 +33,10 @@ public class Parser {
                 tokens.advance();
                 return expression;
             } else {
-                throw new SyntaxError("Invalid syntax, expected )");
+                throw new SyntaxError(SyntaxError.EXPECTED_RIGHT_PAREN);
             }
         } else {
-            throw new SyntaxError("Invalid syntax - expected number or + or - or (");
+            throw new SyntaxError(SyntaxError.EXPECTED_OP_NUMBER_PAREN);
         }
     }
 
@@ -53,7 +54,7 @@ public class Parser {
                 return NodeFactory.newUnaryOpNode((Operator) token, factor);
             }
             else {
-                throw new SyntaxError("Expected a number");
+                throw new SyntaxError(SyntaxError.EXPECTED_NUMBER);
             }
         } else {
             return power();
