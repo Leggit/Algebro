@@ -1,9 +1,9 @@
 package interpreter;
 
-import expressiontree.ExpressionTree;
-import parser.Parser;
-import parser.SyntaxError;
-import tokeniser.Tokeniser;
+import interpreter.expressiontree.ExpressionTree;
+import interpreter.parser.Parser;
+import interpreter.parser.SyntaxError;
+import interpreter.tokeniser.Tokeniser;
 
 public class Interpreter {
 
