@@ -98,6 +98,12 @@ class InterpreterTest {
     }
 
     @Test
+    public void evaluatesMultiplePowers() throws SyntaxError {
+        double actual = Interpreter.evaluate("3 ^ 2 ^ 1.5");
+        assertEquals(22.361590938430393, actual);
+    }
+
+    @Test
     public void evaluatesNegativeExpressions() throws SyntaxError {
         double actual = Interpreter.evaluate("-(9 + 2)");
         assertEquals(-11, actual);

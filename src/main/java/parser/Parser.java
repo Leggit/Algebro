@@ -36,7 +36,7 @@ public class Parser {
                 throw new SyntaxError(SyntaxError.EXPECTED_RIGHT_PAREN);
             }
         } else {
-            throw new SyntaxError(SyntaxError.EXPECTED_OP_NUMBER_PAREN);
+            throw new SyntaxError(SyntaxError.EXPECTED_OP_NUMBER_PAREN, tokens.getCurrentToken());
         }
     }
 

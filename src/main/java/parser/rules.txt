@@ -1,11 +1,11 @@
 <expression> ::= <expression> | <term><+-><term>
-<term> ::= <term> | <factor><*/><factor>
-<factor> ::= <+-><atom>
-<power> ::= <power> | <atom><^><factor>
+<term> ::= <term> | <component><*/><component>
+<component> ::= <atom> | <power>
+<power> ::= <power> | <atom><^><component>
 <atom> ::= <number> | <leftParen><expression><rightParen>
 
-factor     = number | "(" expression ")"
-value      = ("+" | "-") expression | expression
+value     = number | "(" expression ")"
+unary      = ("+" | "-") value | value
 power      = power | value ^ value
 component  = component | factor  ("*" | "/") factor
-expression = expression | component ("+" | "-") component
+expression = expression | component ("+" |  "-") component
