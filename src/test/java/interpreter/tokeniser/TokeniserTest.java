@@ -3,6 +3,8 @@ package interpreter.tokeniser;
 import interpreter.expressiontree.impl.SubtractNode;
 import org.junit.jupiter.api.Test;
 import interpreter.tokeniser.token.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +60,9 @@ class TokeniserTest {
         }
     }
 
-    @Test
-    void doesNotAcceptInvalidNumbers() {
+    @ParameterizedTest
+    @ValueSource(strings = {"11.", ".45", "11.2.", "u.6"})
+    void doesNotAcceptInvalidNumbers(String input) {
         Tokeniser tokeniser = new Tokeniser("11.");
         assertThrows(IllegalArgumentException.class, () -> tokeniser.tokenise());
     }
