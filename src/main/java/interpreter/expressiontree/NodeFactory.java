@@ -1,19 +1,50 @@
 package interpreter.expressiontree;
 
-import interpreter.tokeniser.token.Number;
-import interpreter.tokeniser.token.Operator;
+import interpreter.expressiontree.impl.*;
+import interpreter.tokeniser.token.Token;
 
 public class NodeFactory {
 
-    public static Node newNumberNode(Number number) {
-        return new NumberNode(number);
+    public static Node newBinaryOpNode(Token opToken, Node left, Node right) {
+        switch (opToken.type) {
+            case SUBTRACT -> {
+                return new SubtractNode(left, right);
+            }
+            case ADD -> {
+                return new AddNode(left, right);
+            }
+            case POWER -> {
+                return new PowerNode(left, right);
+            }
+            case DIVIDE -> {
+                return new DivideNode(left, right);
+            }
+            case MULTIPLY -> {
+                return new MultiplyNode(left, right);
+            }
+            default -> {
+                throw new IllegalArgumentException("Could not create binary operation node using " + opToken.value);
+            }
+        }
     }
 
-    public static Node newBinaryOpNode(Operator op, Node left, Node right) {
-        return new BinaryOpNode(op, left, right);
+    public static Node newUnaryOpNode(Token opToken, Node child) {
+        switch (opToken.type) {
+            case ADD -> {
+                return new PositiveUnaryNode(child);
+            }
+            case SUBTRACT -> {
+                return new NegativeUnaryNode(child);
+            }
+            default -> {
+                throw new IllegalArgumentException("Could not create unary op node using " + opToken.value);
+            }
+        }
     }
 
-    public static Node newUnaryOpNode(Operator op, Node child) {
-        return  new UnaryOpNode(op, child);
+    public static Node newNumberNode(Token valueToken) {
+        return new NumberNode((double) valueToken.value);
     }
+
+
 }

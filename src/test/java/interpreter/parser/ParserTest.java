@@ -37,6 +37,7 @@ class ParserTest {
         SyntaxError e = assertThrows(SyntaxError.class, () -> parser.parse());
     }
 
+    // TODO stop this from failing???
     @Test
     void shouldThrowSyntaxErrorWhenExpectingOperand() {
         Tokeniser tokeniser = new Tokeniser("(1) 1");

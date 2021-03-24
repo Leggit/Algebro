@@ -115,6 +115,6 @@ class InterpreterTest {
     public void shouldThrowExceptionOnJunkInput() {
         String junk = "1 rdfy ( 789) -==tguihunj(*&^ft7gyuihuoikp";
         Exception e = assertThrows(IllegalArgumentException.class, () -> Interpreter.evaluate(junk));
-        assertEquals(e.getMessage(), "Invalid token: r");
+        assertTrue(e.getMessage().contains("Invalid token"));
     }
 }

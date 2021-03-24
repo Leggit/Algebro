@@ -1,14 +1,15 @@
 package interpreter.tokeniser;
 
 import interpreter.tokeniser.token.*;
-import interpreter.tokeniser.token.Number;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static interpreter.tokeniser.token.TokenType.*;
+
 public class Tokeniser {
 
-    private final String input;
+    private String input;
     private int position = -1;
     private String currentChar;
     private List<Token> tokens = new ArrayList<Token>();
@@ -23,31 +24,30 @@ public class Tokeniser {
         currentChar = position < input.length() ? String.valueOf(input.charAt(position)) : null;
     }
 
-    private void retreat() {
-        position--;
-        currentChar = String.valueOf(input.charAt(position));
+    private String peakNext() {
+        return position + 1 < input.length() ? String.valueOf(input.charAt(position + 1)) : null;
     }
 
     public List<Token> tokenise() {
         Token newToken;
 
         while(currentChar != null) {
-            if(currentChar.equals(Parentheses.LEFT.symbol)) {
-                newToken = Parentheses.LEFT;
+            if(LEFT_PAREN.matches(currentChar)) {
+                newToken = new Token(LEFT_PAREN, currentChar, position);
                 advance();
             }
-            else if(currentChar.equals(Parentheses.RIGHT.symbol)) {
-                newToken = Parentheses.RIGHT;
+            else if(RIGHT_PAREN.matches(currentChar)) {
+                newToken = new Token(RIGHT_PAREN, currentChar, position);
                 advance();
             }
-            else if(Operator.find(currentChar) != null) {
-                newToken = Operator.find(currentChar);
+            else if(getOperator(currentChar) != null) {
+                newToken = new Token(getOperator(currentChar), currentChar, position);
                 advance();
             }
-            else if(Number.DIGITS.contains(currentChar))
+            else if(NUMBER.matches(currentChar))
                 newToken = toNumber();
             else
-                throw new IllegalArgumentException("Invalid token: " + currentChar);
+                throw new IllegalArgumentException("Invalid token at position " + position + " : " + currentChar);
 
             tokens.add(newToken);
         }
@@ -55,11 +55,14 @@ public class Tokeniser {
         return tokens;
     }
 
-    private Number toNumber() {
+    private Token toNumber() {
         String numberStr = "";
 
         while(currentCharIsValidNumberChar()) {
-            if(currentChar.equals(".") && !numberStr.contains(".")) {
+            if(currentChar.equals(".")) {
+                if(numberStr.contains(".") || peakNext() == null || !NUMBER.matches(peakNext())) {
+                    throw new IllegalArgumentException("Illegal token at position " + position + " : " + currentChar);
+                }
                 numberStr += ".";
             } else {
                 numberStr += currentChar;
@@ -68,10 +71,10 @@ public class Tokeniser {
             advance();
         }
 
-        return new Number(Double.parseDouble(numberStr));
+        return new Token(NUMBER, Double.parseDouble(numberStr), position);
     }
 
     private boolean currentCharIsValidNumberChar() {
-        return this.currentChar != null && (Number.DIGITS + ".").contains(this.currentChar);
+        return this.currentChar != null && (currentChar.matches("[0-9]") || currentChar.equals("."));
     }
 }
