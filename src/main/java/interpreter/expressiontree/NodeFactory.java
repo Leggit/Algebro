@@ -42,8 +42,8 @@ public class NodeFactory {
         }
     }
 
-    public static Node newNumberNode(Token valueToken) {
-        return new NumberNode((double) valueToken.value);
+    public static Node newNumberNode(Token numberToken) {
+        return new NumberNode((double) numberToken.value);
     }
 
 
