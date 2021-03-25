@@ -1,6 +1,7 @@
 package interpreter.parser;
 
 import interpreter.expressiontree.*;
+import interpreter.expressiontree.SimpleExpressionTree;
 import interpreter.tokeniser.token.*;
 
 import java.util.List;
@@ -15,10 +16,10 @@ public class Parser {
         this.tokens = new ParserData(tokens);
     }
 
-    public ExpressionTree parse() throws SyntaxError {
+    public SimpleExpressionTree parse() throws SyntaxError {
         SyntaxValidator.validate(tokens.getAll());
         Node root = expression();
-        return new ExpressionTree(root);
+        return new SimpleExpressionTree(root);
     }
 
     private Node atom() throws SyntaxError {

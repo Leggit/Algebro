@@ -12,4 +12,9 @@ public class AddNode extends BinaryOpNode {
     protected double calculate(double a, double b) {
         return a + b;
     }
+
+    @Override
+    public String getSymbol() {
+        return "+";
+    }
 }

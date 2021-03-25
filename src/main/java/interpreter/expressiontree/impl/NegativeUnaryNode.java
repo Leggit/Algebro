@@ -13,4 +13,9 @@ public class NegativeUnaryNode extends UnaryOpNode {
     public double evaluate() {
         return this.getChild().evaluate() * -1;
     }
+
+    @Override
+    public String getSymbol() {
+        return "-";
+    }
 }

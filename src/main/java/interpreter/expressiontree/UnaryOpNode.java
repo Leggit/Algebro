@@ -1,6 +1,6 @@
 package interpreter.expressiontree;
 
-public abstract class UnaryOpNode extends Node {
+public abstract class UnaryOpNode implements OpNode {
 
     private Node child;
 
@@ -12,4 +12,8 @@ public abstract class UnaryOpNode extends Node {
         return child;
     }
 
+    @Override
+    public String toString() {
+        return "(" + getSymbol() + child.toString() + ")";
+    }
 }

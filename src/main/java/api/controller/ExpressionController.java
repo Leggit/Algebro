@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
-@RequestMapping("/interpret")
-public class InterpreterController {
+@RequestMapping("/expression")
+public class ExpressionController {
 
-    @GetMapping("/hello")
-    public String hello() {
+    @GetMapping("/evaluate")
+    public String evaluateSimpleExpression() {
         return "Hi";
     }
 }

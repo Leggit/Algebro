@@ -1,6 +1,6 @@
 package interpreter.expressiontree;
 
-public abstract class BinaryOpNode extends Node {
+public abstract class BinaryOpNode implements OpNode {
 
     private Node left;
     private Node right;
@@ -18,4 +18,9 @@ public abstract class BinaryOpNode extends Node {
     }
 
     protected abstract double calculate(double a, double b);
+
+    @Override
+    public String toString() {
+        return "(" + left.toString() + " " + getSymbol() + " " + right.toString() + ")";
+    }
 }

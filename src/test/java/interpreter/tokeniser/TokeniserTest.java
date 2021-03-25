@@ -1,6 +1,5 @@
 package interpreter.tokeniser;
 
-import interpreter.expressiontree.impl.SubtractNode;
 import org.junit.jupiter.api.Test;
 import interpreter.tokeniser.token.*;
 import org.junit.jupiter.params.ParameterizedTest;

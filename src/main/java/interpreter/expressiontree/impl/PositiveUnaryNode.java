@@ -13,4 +13,9 @@ public class PositiveUnaryNode extends UnaryOpNode {
     public double evaluate() {
         return this.getChild().evaluate();
     }
+
+    @Override
+    public String getSymbol() {
+        return "";
+    }
 }

@@ -12,4 +12,9 @@ public class PowerNode extends BinaryOpNode {
     protected double calculate(double a, double b) {
         return Math.pow(a,b);
     }
+
+    @Override
+    public String getSymbol() {
+        return "^";
+    }
 }
