@@ -1,19 +1,19 @@
 package interpreter.expressiontree;
 
-import interpreter.tokeniser.token.Operator;
+public abstract class UnaryOpNode implements OpNode {
 
-public class UnaryOpNode extends Node {
+    private Node child;
 
-    Operator operand;
-    Node child;
-
-    public UnaryOpNode(Operator operand, Node child) {
-        this.operand = operand;
+    public UnaryOpNode(Node child) {
         this.child = child;
     }
 
+    public Node getChild() {
+        return child;
+    }
+
     @Override
-    public double evaluate() {
-        return child.evaluate() * operand.calculate(0, 1);
+    public String toString() {
+        return "(" + getSymbol() + child.toString() + ")";
     }
 }

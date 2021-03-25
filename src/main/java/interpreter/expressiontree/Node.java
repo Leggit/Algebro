@@ -1,5 +1,6 @@
 package interpreter.expressiontree;
 
-public abstract class Node {
-    public abstract double evaluate();
+public interface Node {
+    double evaluate();
+    String toString();
 }

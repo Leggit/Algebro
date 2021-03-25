@@ -2,11 +2,13 @@ package interpreter.tokeniser;
 
 import org.junit.jupiter.api.Test;
 import interpreter.tokeniser.token.*;
-import interpreter.tokeniser.token.Number;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static interpreter.tokeniser.token.TokenType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TokeniserTest {
@@ -16,16 +18,16 @@ class TokeniserTest {
         Tokeniser tokeniser = new Tokeniser("1 + 2");
         List<Token> expectedTokens = new ArrayList<Token>();
 
-        expectedTokens.add(new Number(1));
-        expectedTokens.add(Operator.ADD);
-        expectedTokens.add(new Number(2));
+        expectedTokens.add(new Token(NUMBER, "1.0", 0));
+        expectedTokens.add(new Token(ADD, "+", 1));
+        expectedTokens.add(new Token(NUMBER, "2.0", 2));
 
         List<Token> actualTokens = tokeniser.tokenise();
 
         assertEquals(expectedTokens.size(), actualTokens.size());
 
         for(int i = 0; i < expectedTokens.size(); i++) {
-            assertEquals(expectedTokens.get(i).getSymbol(), actualTokens.get(i).getSymbol());
+            assertEquals(expectedTokens.get(i).value.toString(), actualTokens.get(i).value.toString());
         }
     }
 
@@ -34,17 +36,18 @@ class TokeniserTest {
         Tokeniser tokeniser = new Tokeniser("(100000 - -2) * 6.01 / -2.13456");
         List<Token> expectedTokens = new ArrayList<Token>();
 
-        expectedTokens.add(Parentheses.LEFT);
-        expectedTokens.add(new Number(100000));
-        expectedTokens.add(Operator.SUBTRACT);
-        expectedTokens.add(Operator.SUBTRACT);
-        expectedTokens.add(new Number(2));
-        expectedTokens.add(Parentheses.RIGHT);
-        expectedTokens.add(Operator.MULTIPLY);
-        expectedTokens.add(new Number(6.01));
-        expectedTokens.add(Operator.DIVIDE);
-        expectedTokens.add(Operator.SUBTRACT);
-        expectedTokens.add(new Number(2.13456));
+        expectedTokens.add(new Token(LEFT_PAREN, "(", 0));
+        expectedTokens.add(new Token(NUMBER, "100000.0", 1));
+        expectedTokens.add(new Token(SUBTRACT, "-", 2));
+        expectedTokens.add(new Token(SUBTRACT, "-", 3));
+        expectedTokens.add(new Token(NUMBER, "2.0", 4));
+        expectedTokens.add(new Token(RIGHT_PAREN, ")", 5));
+        expectedTokens.add(new Token(MULTIPLY, "*", 6));
+        expectedTokens.add(new Token(NUMBER, "6.01", 7));
+        expectedTokens.add(new Token(DIVIDE, "/", 8));
+        expectedTokens.add(new Token(SUBTRACT, "-", 9));
+        expectedTokens.add(new Token(NUMBER, "2.13456", 10));
+
 
         List<Token> actualTokens = tokeniser.tokenise();
 
@@ -52,28 +55,14 @@ class TokeniserTest {
 
         for(int i = 0; i < expectedTokens.size(); i++) {
             System.out.print(actualTokens.get(i).toString());
-            assertEquals(expectedTokens.get(i).getSymbol(), actualTokens.get(i).getSymbol());
+            assertEquals(expectedTokens.get(i).value.toString(), actualTokens.get(i).value.toString());
         }
     }
 
-    @Test
-    public void tokeniserCanHandleNegativeNumbers() {
-        Tokeniser tokeniser = new Tokeniser("-1.0913081 - -1");
-        List<Token> expectedTokens = new ArrayList<Token>();
-
-        expectedTokens.add(Operator.SUBTRACT);
-        expectedTokens.add(new Number(1.0913081));
-        expectedTokens.add(Operator.SUBTRACT);
-        expectedTokens.add(Operator.SUBTRACT);
-        expectedTokens.add(new Number(1));
-
-        List<Token> actualTokens = tokeniser.tokenise();
-
-        assertEquals(expectedTokens.size(), actualTokens.size());
-
-        for(int i = 0; i < expectedTokens.size(); i++) {
-            assertEquals(expectedTokens.get(i).getSymbol(), actualTokens.get(i).getSymbol());
-        }
+    @ParameterizedTest
+    @ValueSource(strings = {"11.", ".45", "11.2.", "u.6"})
+    void doesNotAcceptInvalidNumbers(String input) {
+        Tokeniser tokeniser = new Tokeniser("11.");
+        assertThrows(IllegalArgumentException.class, () -> tokeniser.tokenise());
     }
-
 }

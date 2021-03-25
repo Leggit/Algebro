@@ -1,7 +1,7 @@
 package interpreter.parser;
 
-import interpreter.tokeniser.token.Parentheses;
 import interpreter.tokeniser.token.Token;
+import interpreter.tokeniser.token.TokenType;
 
 import java.util.List;
 
@@ -33,9 +33,9 @@ public class SyntaxValidator {
         int right = 0;
 
         for(Token t : this.tokenList) {
-            if(t.getSymbol().equals(Parentheses.LEFT.symbol))
+            if(t.type == TokenType.LEFT_PAREN)
                 left++;
-            if(t.getSymbol().equals(Parentheses.RIGHT.symbol))
+            if(t.type == TokenType.RIGHT_PAREN)
                 right++;
         }
 
