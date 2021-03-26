@@ -16,6 +16,16 @@ public class NumberNode implements Node {
     }
 
     @Override
+    public int calculateHeight() {
+        return 0;
+    }
+
+    @Override
+    public String getSymbol() {
+        return String.valueOf(number);
+    }
+
+    @Override
     public String toString() {
         return "(" + String.valueOf(number) + ")";
     }

@@ -1,9 +1,7 @@
 package interpreter.expressiontree;
 
-import interpreter.expressiontree.ExpressionTree;
-import interpreter.expressiontree.Node;
-
 public class SimpleExpressionTree implements ExpressionTree {
+
     private Node root;
 
     public SimpleExpressionTree(Node root) {
@@ -12,6 +10,16 @@ public class SimpleExpressionTree implements ExpressionTree {
 
     public double evaluate() {
         return root.evaluate();
+    }
+
+    @Override
+    public Node getRoot() {
+        return root;
+    }
+
+    @Override
+    public int getHeight() {
+        return root.calculateHeight();
     }
 
     @Override

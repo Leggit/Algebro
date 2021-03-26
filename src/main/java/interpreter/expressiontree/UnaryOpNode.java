@@ -1,8 +1,8 @@
 package interpreter.expressiontree;
 
-public abstract class UnaryOpNode implements OpNode {
+public abstract class UnaryOpNode implements Node {
 
-    private Node child;
+    private final Node child;
 
     public UnaryOpNode(Node child) {
         this.child = child;
@@ -10,6 +10,11 @@ public abstract class UnaryOpNode implements OpNode {
 
     public Node getChild() {
         return child;
+    }
+
+    @Override
+    public int calculateHeight() {
+        return child.calculateHeight() + 1;
     }
 
     @Override
