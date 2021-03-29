@@ -1,0 +1,5 @@
+interpreter\expressiontree\SimpleExpressionTreeTest.class
+interpreter\tokeniser\token\TokenTypeTest.class
+interpreter\InterpreterTest.class
+interpreter\parser\ParserTest.class
+interpreter\tokeniser\TokeniserTest.class

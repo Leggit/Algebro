@@ -16,6 +16,6 @@ public class PositiveUnaryNode extends UnaryOpNode {
 
     @Override
     public String getSymbol() {
-        return "";
+        return "+";
     }
 }
