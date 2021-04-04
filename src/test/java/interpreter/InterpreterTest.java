@@ -118,6 +118,12 @@ class InterpreterTest {
     }
 
     @Test
+    public void evaluatesLog0() throws SyntaxError {
+        double actual = Interpreter.evaluate("log(0)");
+        assertEquals(Double.NEGATIVE_INFINITY, actual);
+    }
+
+    @Test
     public void evaluateNaturalLog() throws SyntaxError {
         double actual = Interpreter.evaluate("9 + 2 / ln(10 * 7 - 6)");
         assertEquals(9 + 2 / Math.log(10 * 7 - 6), actual);
