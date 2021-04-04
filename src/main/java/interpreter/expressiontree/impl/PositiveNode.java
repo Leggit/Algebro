@@ -3,9 +3,9 @@ package interpreter.expressiontree.impl;
 import interpreter.expressiontree.Node;
 import interpreter.expressiontree.UnaryOpNode;
 
-public class PositiveUnaryNode extends UnaryOpNode {
+public class PositiveNode extends UnaryOpNode {
 
-    public PositiveUnaryNode(Node child) {
+    public PositiveNode(Node child) {
         super(child);
     }
 

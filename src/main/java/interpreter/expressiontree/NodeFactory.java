@@ -31,10 +31,16 @@ public class NodeFactory {
     public static Node newUnaryOpNode(Token opToken, Node child) {
         switch (opToken.type) {
             case ADD -> {
-                return new PositiveUnaryNode(child);
+                return new PositiveNode(child);
             }
             case SUBTRACT -> {
-                return new NegativeUnaryNode(child);
+                return new NegativeNode(child);
+            }
+            case LOG -> {
+                return new LogNode(child);
+            }
+            case LN -> {
+                return new LnNode(child);
             }
             default -> {
                 throw new IllegalArgumentException("Could not create unary op node using " + opToken.value);

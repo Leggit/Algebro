@@ -9,7 +9,9 @@ public enum TokenType {
     NUMBER("[0-9]"),
     RIGHT_PAREN("\\)"),
     LEFT_PAREN("\\("),
-    VARIABLE("x");
+    VARIABLE("x"),
+    LOG("log"),
+    LN("ln");
 
     private final String pattern;
 
@@ -32,6 +34,15 @@ public enum TokenType {
             return DIVIDE;
         if(POWER.matches(input))
             return POWER;
+        else
+            return null;
+    }
+
+    public static TokenType getKeyWord(String input) {
+        if(LOG.matches(input))
+            return LOG;
+        if(LN.matches(input))
+            return LN;
         else
             return null;
     }

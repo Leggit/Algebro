@@ -59,10 +59,37 @@ class TokeniserTest {
         }
     }
 
+    @Test
+    void tokeniseLog() {
+        Tokeniser tokeniser = new Tokeniser("log(3)");
+        List<Token> expectedTokens = new ArrayList<Token>();
+
+        expectedTokens.add(new Token(LOG, "log", 0));
+        expectedTokens.add(new Token(LEFT_PAREN, "(", 1));
+        expectedTokens.add(new Token(NUMBER, "3.0", 2));
+        expectedTokens.add(new Token(RIGHT_PAREN, ")", 3));
+
+
+        List<Token> actualTokens = tokeniser.tokenise();
+
+        assertEquals(expectedTokens.size(), actualTokens.size());
+
+        for(int i = 0; i < expectedTokens.size(); i++) {
+            assertEquals(expectedTokens.get(i).value.toString(), actualTokens.get(i).value.toString());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"logh(3)", "Log", "8l0g"})
+    void doesNotAcceptInvalidIdentifiers(String input) {
+        Tokeniser tokeniser = new Tokeniser(input);
+        assertThrows(IllegalArgumentException.class, () -> tokeniser.tokenise());
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {"11.", ".45", "11.2.", "u.6"})
     void doesNotAcceptInvalidNumbers(String input) {
-        Tokeniser tokeniser = new Tokeniser("11.");
+        Tokeniser tokeniser = new Tokeniser(input);
         assertThrows(IllegalArgumentException.class, () -> tokeniser.tokenise());
     }
 }

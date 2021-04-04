@@ -44,8 +44,12 @@ public class Tokeniser {
                 newToken = new Token(getOperator(currentChar), currentChar, position);
                 advance();
             }
-            else if(NUMBER.matches(currentChar))
+            else if(NUMBER.matches(currentChar)) {
                 newToken = toNumber();
+            }
+            else if(isLetter()) {
+                newToken = toIdentifier();
+            }
             else
                 throw new IllegalArgumentException("Invalid token at position " + position + " : " + currentChar);
 
@@ -53,6 +57,21 @@ public class Tokeniser {
         }
 
         return tokens;
+    }
+
+    private Token toIdentifier() {
+        String identifier = "";
+
+        while(isLetter()) {
+            identifier += currentChar;
+            advance();
+        }
+
+        if(TokenType.getKeyWord(identifier) != null) {
+            return new Token(TokenType.getKeyWord(identifier), identifier, position);
+        } else {
+            throw new IllegalArgumentException("Unexpected identifier: " + identifier);
+        }
     }
 
     private Token toNumber() {
@@ -76,5 +95,9 @@ public class Tokeniser {
 
     private boolean currentCharIsValidNumberChar() {
         return this.currentChar != null && (currentChar.matches("[0-9]") || currentChar.equals("."));
+    }
+
+    private boolean isLetter() {
+        return this.currentChar != null && this.currentChar.matches("[a-zA-Z]");
     }
 }

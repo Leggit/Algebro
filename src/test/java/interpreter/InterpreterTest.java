@@ -89,8 +89,8 @@ class InterpreterTest {
 
     @Test
     public void evaluatesFractionalPowers() throws SyntaxError {
-        double actual = Interpreter.evaluate("4 ^ (1/2)");
-        assertEquals(2, actual);
+        double actual = Interpreter.evaluate("4 ^ (1/3)");
+        assertEquals(1.5874010519681994, actual);
     }
 
     @Test
@@ -105,6 +105,24 @@ class InterpreterTest {
         assertEquals(-11, actual);
     }
 
+    @Test
+    public void evaluatesSimpleLog() throws SyntaxError {
+        double actual = Interpreter.evaluate("log(100)");
+        assertEquals(2, actual);
+    }
+
+    @Test
+    public void evaluatesExpressionLog() throws SyntaxError {
+        double actual = Interpreter.evaluate("log(10 ^ 2)");
+        assertEquals(2, actual);
+    }
+
+    @Test
+    public void evaluateNaturalLog() throws SyntaxError {
+        double actual = Interpreter.evaluate("9 + 2 / ln(10 * 7 - 6)");
+        assertEquals(9 + 2 / Math.log(10 * 7 - 6), actual);
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {"", " "})
     public void shouldThrowExceptionOnEmptyInput(String input) {
@@ -115,6 +133,6 @@ class InterpreterTest {
     public void shouldThrowExceptionOnJunkInput() {
         String junk = "1 rdfy ( 789) -==tguihunj(*&^ft7gyuihuoikp";
         Exception e = assertThrows(IllegalArgumentException.class, () -> Interpreter.evaluate(junk));
-        assertTrue(e.getMessage().contains("Invalid token"));
+        assertTrue(e.getMessage().contains("Unexpected identifier"));
     }
 }

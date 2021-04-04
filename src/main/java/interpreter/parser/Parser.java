@@ -31,7 +31,7 @@ public class Parser {
         } else if (openBracket(token)) {
             tokens.advance();
             Node expression = expression();
-            if(closeBracket(tokens.getCurrentToken())) {
+            if (closeBracket(tokens.getCurrentToken())) {
                 tokens.advance();
                 return expression;
             } else {
@@ -49,15 +49,10 @@ public class Parser {
     private Node factor() throws SyntaxError {
         Token token = tokens.getCurrentToken();
 
-        if(isAddOrSubtract(token)) {
+        if(isAddOrSubtract(token) || isKeyWord(token))  {
             tokens.advance();
             Node factor = atom();
-            //if(factor.getClass() == NumberNode.class || factor.getClass() == BinaryOpNode.class) {
-                return NodeFactory.newUnaryOpNode(token, factor);
-            //}
-            //else {
-            //    throw new SyntaxError(SyntaxError.EXPECTED_NUMBER);
-            //}
+            return NodeFactory.newUnaryOpNode(token, factor);
         } else {
             return power();
         }
@@ -115,5 +110,9 @@ public class Parser {
 
     private boolean isAddOrSubtract(Token token) {
         return token.type == ADD || token.type == SUBTRACT;
+    }
+
+    private boolean isKeyWord(Token token) {
+        return TokenType.getKeyWord(token.value.toString()) != null;
     }
 }
