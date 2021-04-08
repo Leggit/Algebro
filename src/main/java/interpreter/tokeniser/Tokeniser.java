@@ -69,7 +69,10 @@ public class Tokeniser {
 
         if(TokenType.getKeyWord(identifier) != null) {
             return new Token(TokenType.getKeyWord(identifier), identifier, position);
-        } else {
+        } else if(TokenType.getConstant(identifier) != null) {
+            return new Token(NUMBER, TokenType.getConstant(identifier), position);
+        }
+        else {
             throw new IllegalArgumentException("Unexpected identifier: " + identifier);
         }
     }

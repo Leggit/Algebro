@@ -3,6 +3,8 @@ package interpreter.expressiontree;
 import interpreter.expressiontree.impl.*;
 import interpreter.tokeniser.token.Token;
 
+import java.util.concurrent.CompletionService;
+
 public class NodeFactory {
 
     public static Node newBinaryOpNode(Token opToken, Node left, Node right) {
@@ -41,6 +43,24 @@ public class NodeFactory {
             }
             case LN -> {
                 return new LnNode(child);
+            }
+            case SIN -> {
+                return new SinNode(child);
+            }
+            case COS -> {
+                return new CosNode(child);
+            }
+            case TAN -> {
+                return new TanNode(child);
+            }
+            case ASIN -> {
+                return new AsinNode(child);
+            }
+            case ACOS -> {
+                return new AcosNode(child);
+            }
+            case ATAN -> {
+                return new AtanNode(child);
             }
             default -> {
                 throw new IllegalArgumentException("Could not create unary op node using " + opToken.value);

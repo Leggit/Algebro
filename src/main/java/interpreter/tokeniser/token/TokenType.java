@@ -11,7 +11,16 @@ public enum TokenType {
     LEFT_PAREN("\\("),
     VARIABLE("x"),
     LOG("log"),
-    LN("ln");
+    LN("ln"),
+    SIN("sin"),
+    COS("cos"),
+    TAN("tan"),
+    ASIN("asin"),
+    ACOS("acos"),
+    ATAN("atan"),
+    PI("PI"),
+    E("e");
+
 
     private final String pattern;
 
@@ -43,6 +52,27 @@ public enum TokenType {
             return LOG;
         if(LN.matches(input))
             return LN;
+        if(SIN.matches(input))
+            return SIN;
+        if(COS.matches(input))
+            return COS;
+        if(TAN.matches(input))
+            return TAN;
+        if(ACOS.matches(input))
+            return ACOS;
+        if(ASIN.matches(input))
+            return ASIN;
+        if(ATAN.matches(input))
+            return ATAN;
+        else
+            return null;
+    }
+
+    public static Double getConstant(String input) {
+        if(PI.matches(input))
+            return Math.PI;
+        if(E.matches(input))
+            return Math.E;
         else
             return null;
     }

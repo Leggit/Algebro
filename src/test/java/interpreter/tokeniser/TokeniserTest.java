@@ -80,6 +80,59 @@ class TokeniserTest {
     }
 
     @ParameterizedTest
+    @ValueSource(strings = {"sin", "cos", "tan", "asin", "acos", "atan"})
+    void tokeniseTrigKeyWords(String keyWord) {
+        Tokeniser tokeniser = new Tokeniser(keyWord + "(3)");
+        List<Token> expectedTokens = new ArrayList<Token>();
+
+        expectedTokens.add(new Token(TokenType.getKeyWord(keyWord), keyWord, 0));
+        expectedTokens.add(new Token(LEFT_PAREN, "(", 1));
+        expectedTokens.add(new Token(NUMBER, "3.0", 2));
+        expectedTokens.add(new Token(RIGHT_PAREN, ")", 3));
+
+
+        List<Token> actualTokens = tokeniser.tokenise();
+
+        assertEquals(expectedTokens.size(), actualTokens.size());
+
+        for(int i = 0; i < expectedTokens.size(); i++) {
+            assertEquals(expectedTokens.get(i).value.toString(), actualTokens.get(i).value.toString());
+        }
+    }
+
+    @Test
+    void testPi() {
+        Tokeniser tokeniser = new Tokeniser("PI");
+        List<Token> expectedTokens = new ArrayList<Token>();
+
+        expectedTokens.add(new Token(NUMBER, Math.PI, 0));
+
+        List<Token> actualTokens = tokeniser.tokenise();
+
+        assertEquals(expectedTokens.size(), actualTokens.size());
+
+        for(int i = 0; i < expectedTokens.size(); i++) {
+            assertEquals(expectedTokens.get(i).value.toString(), actualTokens.get(i).value.toString());
+        }
+    }
+
+    @Test
+    void testE() {
+        Tokeniser tokeniser = new Tokeniser("e");
+        List<Token> expectedTokens = new ArrayList<Token>();
+
+        expectedTokens.add(new Token(NUMBER, Math.E, 0));
+
+        List<Token> actualTokens = tokeniser.tokenise();
+
+        assertEquals(expectedTokens.size(), actualTokens.size());
+
+        for(int i = 0; i < expectedTokens.size(); i++) {
+            assertEquals(expectedTokens.get(i).value.toString(), actualTokens.get(i).value.toString());
+        }
+    }
+
+    @ParameterizedTest
     @ValueSource(strings = {"logh(3)", "Log", "8l0g"})
     void doesNotAcceptInvalidIdentifiers(String input) {
         Tokeniser tokeniser = new Tokeniser(input);
