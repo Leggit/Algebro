@@ -3,9 +3,13 @@ interpreter\expressiontree\impl\AddNode.class
 interpreter\expressiontree\impl\NumberNode.class
 interpreter\expressiontree\NodeFactory$1.class
 interpreter\tokeniser\token\TokenType.class
+interpreter\expressiontree\impl\AtanNode.class
+interpreter\expressiontree\impl\CosNode.class
 interpreter\expressiontree\impl\DivideNode.class
 interpreter\expressiontree\impl\PowerNode.class
 interpreter\expressiontree\SimpleExpressionTree.class
+interpreter\expressiontree\impl\AcosNode.class
+interpreter\expressiontree\impl\AsinNode.class
 interpreter\expressiontree\impl\NegativeNode.class
 interpreter\parser\ParserData.class
 interpreter\tokeniser\token\Token.class
@@ -25,4 +29,6 @@ interpreter\parser\ParserRule.class
 api\AlgebroApplication.class
 interpreter\expressiontree\impl\LogNode.class
 interpreter\expressiontree\impl\SubtractNode.class
+interpreter\expressiontree\impl\TanNode.class
 interpreter\Interpreter.class
+interpreter\expressiontree\impl\SinNode.class
