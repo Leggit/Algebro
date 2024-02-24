@@ -7,12 +7,23 @@ import interpreter.Interpreter;
 import interpreter.parser.SyntaxError;
 
 import java.io.BufferedWriter;
+import java.net.HttpURLConnection;
 
 public class Evaluate implements HttpFunction {
     @Override
     public void service(HttpRequest httpRequest, HttpResponse httpResponse) throws Exception {
         httpResponse.setContentType("text/plain");
         BufferedWriter writer = httpResponse.getWriter();
+
+        httpResponse.appendHeader("Access-Control-Allow-Origin", "*");
+
+        if ("OPTIONS".equals(httpRequest.getMethod())) {
+            httpResponse.appendHeader("Access-Control-Allow-Methods", "GET");
+            httpResponse.appendHeader("Access-Control-Allow-Headers", "Content-Type");
+            httpResponse.appendHeader("Access-Control-Max-Age", "3600");
+            httpResponse.setStatusCode(HttpURLConnection.HTTP_NO_CONTENT);
+            return;
+        }
 
         try {
             double result = Interpreter.evaluate(httpRequest.getFirstQueryParameter("expression").get());
